@@ -17,12 +17,13 @@ class ACRCloudConfig {
 
 /// A recording session.
 class ACRCloudSession {
-  final _result = Completer<ACRCloudResponse?>();
+  // final _result = Completer<ACRCloudResponse?>();
+  final _result = Completer<Map<String, dynamic>?>();
   final _volume = StreamController<double>();
 
   /// A [Future] which resolves to `null` if the session is [cancel]led, or an
   /// [ACRCloudResponse] otherwise.
-  Future<ACRCloudResponse?> get result => _result.future;
+  Future<Map<String, dynamic>?> get result => _result.future;
 
   /// A [Stream] of volume values.
   Stream<double> get volumeStream => _volume.stream;
@@ -72,7 +73,9 @@ class ACRCloud {
         _session?._volume.add(call.arguments);
       } else if (call.method == 'result') {
         _session?._result
-            .complete(ACRCloudResponse.fromJson(json.decode(call.arguments)));
+            .complete(json.decode(call.arguments));
+        // _session?._result
+        //     .complete(ACRCloudResponse.fromJson(json.decode(call.arguments)));
       }
     });
 
